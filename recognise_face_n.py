@@ -49,9 +49,12 @@ else:
     face_names = []
     process_this_frame = True
 
+    previous_face_encodings = np.ones((1,128))
+
     while True:
         # Grab a single frame of video
         ret, frame = video_capture.read()
+        height, width = frame.shape[:2]
 
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -59,12 +62,11 @@ else:
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
 
-        # Only process every other frame of video to save time
+        # Only process every othe  r frame of video to save time
         if process_this_frame:
             # Find all the faces and face encodings in the current frame of video
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-
             #print("Number of faces: ", len(face_locations))
 
             face_names = []
@@ -106,11 +108,13 @@ else:
             color_yellow = (0, 255, 255)
 
             love = ""
-
+            #if name == "fatih":
+            #    sub_face = frame[(top-50 if top-50 > 0 else 0) : (bottom+50 if bottom+50<height else height), (left-50 if left-50>0 else 0):(right+50 if right+50<width else width)]
+            #    cv2.imwrite('fato.jpg', sub_face)
             if name == "Unknown":
                 color = color_red
 
-            elif name == "tugce":
+            elif name == "love":
                 color = color_yellow
                 love = "I love you"
             else:
